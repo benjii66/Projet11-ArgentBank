@@ -9,6 +9,147 @@ basePath: /api/v1
 schemes:
   - http
 paths:
+  /transactions/{userId}:
+    get:
+      tags:
+        - Transactions Module
+      summary: Get Transactions
+      description: API endpoint for fetching all transactions for a specific user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          description: The user ID to fetch transactions for
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid user ID
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error        
+    post:
+      tags:
+        - Transactions Module
+      summary: Add Transactions
+      description: API endpoint for creating all transactions for a specific user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          description: The user ID to fetch transactions for
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid user ID
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+  /transactions/{userId}/{transactionId}:
+    put:
+      tags:
+        - Transactions Module
+      summary: Update Transaction
+      description: API endpoint for updating an existing transaction for a specific user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          description: The user ID of the transaction owner
+        - name: transactionId
+          in: path
+          required: true
+          type: string
+          description: The transaction ID to update
+        - in: body
+          name: body
+          description: Updated transaction data
+          required: true
+          schema:
+            $ref: '#/definitions/Transaction'
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: Transaction updated successfully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid transaction data
+        '404':
+          description: Transaction or user not found
+        '500':
+          description: Internal Server Error
+
+   
+    patch:
+      tags:
+        - Transactions Module
+      summary: Modify Transaction
+      description: API endpoint for modifying a transaction for a specific user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          description: The user ID of the transaction owner
+        - name: transactionId
+          in: path
+          required: true
+          type: string
+          description: The transaction ID to modify
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: Transaction modified successfully
+        '404':
+          description: Transaction or user not found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - Transactions Module
+      summary: Delete Transaction
+      description: API endpoint for deleting a transaction for a specific user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          description: The user ID of the transaction owner
+        - name: transactionId
+          in: path
+          required: true
+          type: string
+          description: The transaction ID to delete
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: Transaction deleted successfully
+        '404':
+          description: Transaction or user not found
+        '500':
+          description: Internal Server Error
   /user/login:
     post:
       tags:
@@ -33,6 +174,7 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  
   /user/signup:
     post:
       tags:
@@ -57,6 +199,7 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+
   /user/profile:
     post:
       security:
@@ -105,7 +248,7 @@ securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
-    in: header
+    in: header    
 definitions:
   User:
     properties:
@@ -156,3 +299,27 @@ definitions:
     properties:
       userName:
         type: string
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+      date:
+        type: string
+        format: date-time
+      description:
+        type: string
+      amount:
+        type: number
+      balance:
+        type: number
+  NewTransaction:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date-time
+      description:
+        type: string
+      amount:
+        type: number
